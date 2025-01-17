@@ -4,15 +4,7 @@ const groupInput = document.getElementById('group-input');
 const dataTable = document.getElementById('data-table');
 const error = document.getElementById('error');
 const clearAllBtn = document.getElementById('clear-all-btn');
-const removeBtns = document.querySelectorAll('.remove-row-btn');
 
-//обработчик событий для кнопок удаления строки из таблицы
-removeBtns.forEach(button => {
-    button.addEventListener('click', () => {
-        const row = button.parentNode.parentNode;
-        row.parentNode.removeChild(row);
-    });
-});
 
 //обработчик событий для кнопки добавления строки в таблицу
 addBtn.addEventListener('click', () => {
@@ -43,10 +35,20 @@ addBtn.addEventListener('click', () => {
     groupInput.value = '';
 });
 
+//обработчик событий для кнопок удаления строки из таблицы
+dataTable.addEventListener('click', (event) => {
+    if (event.target.classList.contains('remove-row-btn')) {
+        const row = event.target.closest('tr');
+        row.remove();
+    }
+});
+
 //обработчик событий для кнопки удаления всех строк из таблицы
 clearAllBtn.addEventListener('click', () => {
-    const tbody = dataTable.querySelector('tbody');
-    while (tbody.firstChild) {
-        tbody.removeChild(tbody.firstChild);
-    }
+    const rows = Array.from(dataTable.rows);
+    rows.forEach(row => {
+        if (row !== dataTable.rows[0]) {
+            row.remove();
+        }
+    });
 });
